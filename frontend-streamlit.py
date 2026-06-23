@@ -20,7 +20,7 @@ st.markdown("""
 
 st.markdown("""
     <div class = "title-backcolor">
-        <h1> &#128202; Copilot Datascientist Assistant </h1>
+        <h1> &#128202; Copilot cDatascientist Assistant </h1>
             <hr>
         <em> phase 1 -- upload your dataset to begin </em>    
     </div>
