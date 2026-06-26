@@ -83,30 +83,40 @@ if uploaded_data:
         st.write("First 5 rows of your Dataset:")
         st.write(uploaded_data.head(5))
 
-        st.subheader("Dataset Summary")
-        rows , columns = uploaded_data.shape
-        st.write("Shape")
-        st.write("Rows:" , rows)
-        st.write("Columns:" , columns)
+        column1, column2, column3 = st.columns(3)
+        with column1:
 
-        st.divider()
-        st.write("Columns Info")
-        st.write(uploaded_data.dtypes)
+            st.subheader("Dataset Summary")
+            rows , columns = uploaded_data.shape
+            df_created_for_shape_inversion = pd.DataFrame({
+                "Metric" : ["Rows" , "Columns"],
+                "Value" : [rows , columns]
+            })
+            st.table(df_created_for_shape_inversion)
 
-        st.divider()
-        st.write("Missing Values")
-        uploaded_data = pd.DataFrame(uploaded_data)
-        missing_mask = uploaded_data.isnull().sum()
-        st.write(missing_mask)
+        
+        with column2:
+            container1 = st.container(border=True)
+            container1.write("Columns Info")
+            container1.write(uploaded_data.dtypes)
 
-        st.divider()
+        with column3:
+            st.write("Missing Values")
+            uploaded_data = pd.DataFrame(uploaded_data)
+            missing_mask = uploaded_data.isnull().sum()
+            st.write(missing_mask)
+        
         st.subheader("Basic Stats")
-        st.write("Mean")
-        st.write(uploaded_data.mean())
-        st.write("Max")
-        st.write(uploaded_data.max())
-        st.write("Min")
-        st.write(uploaded_data.min())
+        column4, column5, column6 = st.columns(3)
+        with column4:
+            st.write("Mean")
+            st.write(uploaded_data.mean())
+        with column5:
+            st.write("Max")
+            st.write(uploaded_data.max())
+        with column6:
+            st.write("Min")
+            st.write(uploaded_data.min())
     
 
     
