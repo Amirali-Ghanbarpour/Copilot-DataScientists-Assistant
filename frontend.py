@@ -9,6 +9,9 @@ from Backend import pearson_correlation_heatmap
 from Backend import spearman_correlation
 from Backend import spearman_correlation_heatmap
 from scipy.stats import gaussian_kde
+from LLM import eda_scan
+from LLM import eda_scan_each_feature
+from LLM import model_recommendation
 
 
 st.set_page_config(layout="wide")
@@ -57,21 +60,76 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+#--------------------Phase 3 Part 1-----------------------------------------------
+
 #the upload box
 st.space()
 st.subheader("Upload your dataset (CSV or Excel)")
 
 uploaded_data = st.file_uploader(label = "Drag and drop file here")
 
-
 # the data manipulations on the dataset
+eda_results = {}
 if uploaded_data:
     uploaded_data = pd.read_csv(uploaded_data)
+
+    #calculating IQR for dictionary input:
+    list_of_features = uploaded_data.columns
+    dict_of_outliers_per_feature = {}
+    for feature in list_of_features:
+        Q1 = uploaded_data[feature].quantile(0.25)
+        Q3 = uploaded_data[feature].quantile(0.75)
+        IQR = Q3-Q1
+        lower_boundry = Q1 - 1.5 * IQR
+        upper_boundry = Q3 + 1.5 * IQR
+        outliers = uploaded_data[(uploaded_data[feature] < lower_boundry) | (uploaded_data[feature] > upper_boundry)]
+        index_of_outliers = outliers.index
+        index_of_the_outliers_as_list = index_of_outliers.to_list()
+        dict_of_outliers_per_feature[feature] = index_of_the_outliers_as_list
+
+    # Global dictionary as LLM input
+    eda_results["stats"] = uploaded_data.describe().to_dict()
+    eda_results["missing values"] = uploaded_data.isnull().sum().to_dict()
+    eda_results["Min"] = uploaded_data.min().to_dict()
+    eda_results["Max"] = uploaded_data.max().to_dict()
+    eda_results["Mean"] = uploaded_data.mean().to_dict()
+    eda_results["Pearson Correlation"] = uploaded_data.corr("pearson").to_dict()
+    eda_results["Spareman Correlation"] = uploaded_data.corr("spearman").to_dict()
+    eda_results["Outliers"] = dict_of_outliers_per_feature
+
+    # st.write(eda_results)
+
+    #--------------Phase 3 part 2-------------------------------------------
+    #Note: all the int,float outputs needed to be wrapped inside a float(), int() functions because Json file only accepts data from dictionary which are float64,int64
+    each_feature_summary = {}
+    for feature in list_of_features:
+        each_feature_summary[feature] = {
+            "Min" : float(uploaded_data[feature].min()),
+            "Max" : float(uploaded_data[feature].max()),
+            "Mean" : float(uploaded_data[feature].mean()),
+            "Number of Missing Values" : int(uploaded_data[feature].isnull().sum()),
+            "Median" : float(uploaded_data[feature].median()),
+            "Standard Deviation" : float(uploaded_data[feature].std()),
+            "Feature Description" : uploaded_data[feature].describe().to_dict(),
+            "Outliers" : dict_of_outliers_per_feature[feature],
+            "Spearman Correlation": {
+                other_feature : uploaded_data[feature].corr(uploaded_data[other_feature] , method='spearman')
+                for other_feature in list_of_features
+            },
+            
+            "Pearson Correlation" : {
+                other_feature : uploaded_data[feature].corr(uploaded_data[other_feature] , method='pearson')
+                for other_feature in list_of_features
+            }
+
+        }
     
+    #st.write(each_feature_summary)
+    #-----------------------------------------------------------------
     #Option Menu 
     selected = option_menu(
         menu_title = None,
-        options=["Developing Stats" , "Correlation Fields" , "Distributions" , "Outliers Detection" , "Feature Analysis"],
+        options=["Developing Stats" , "Correlation Fields" , "Distributions" , "Outliers Detection" , "Feature Analysis" , "LLM" , "Chat with AI"],
         orientation = "horizontal",
         styles={
         "container": {"padding": "0!important", "background-color": "#e5f4ff"},
@@ -253,6 +311,29 @@ if uploaded_data:
         fig7 , ax = plt.subplots()
         sns.scatterplot(x = feature1_data , y = feature2_data ,ax = ax)
         st.pyplot(fig7)
+    
+
+    if selected == "LLM":
+        if st.button("Generate Dataset Summary"):
+            output_of_LLM_phase3_part1 = eda_scan(eda_results)
+            st.subheader(output_of_LLM_phase3_part1)
+
+        if st.button("Generate Feature Insights"):
+            output_of_LLM_phase3_part2 = eda_scan_each_feature(each_feature_summary)
+            st.subheader(output_of_LLM_phase3_part2)
+        
+        if st.button("Machine Learning Model Suggestion"):
+            output_of_LLM_phase3_part3 = model_recommendation(each_feature_summary , eda_results)
+            st.subheader(output_of_LLM_phase3_part3)
+
+    
+    if selected == "Chat with AI":
+        chat_box = st.text_input("Ask our AI", placeholder="Input yout text here")
+        st.button("Send")
+        
+            
+
+    
 
 
         
