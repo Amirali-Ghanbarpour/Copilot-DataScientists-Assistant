@@ -12,6 +12,7 @@ from scipy.stats import gaussian_kde
 from LLM import eda_scan
 from LLM import eda_scan_each_feature
 from LLM import model_recommendation
+from LLM import ai_answer
 
 
 st.set_page_config(layout="wide")
@@ -328,8 +329,42 @@ if uploaded_data:
 
     
     if selected == "Chat with AI":
-        chat_box = st.text_input("Ask our AI", placeholder="Input yout text here")
-        st.button("Send")
+        question = st.chat_input("Ask our AI")
+
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = []
+        
+        if "eda_results" not in st.session_state:
+            st.session_state.eda_results = []
+
+        if "each_feature_summary" not in st.session_state:
+            st.session_state.each_feature_summary = []
+
+        st.session_state.eda_results = eda_results
+        st.session_state.each_feature_summary = each_feature_summary
+
+        if question:
+            st.session_state.chat_history.append(
+                {"role" : "user" , "content" : question}
+            )
+            answer = ai_answer(question, st.session_state.eda_results, st.session_state.each_feature_summary, st.session_state.chat_history)
+            st.session_state.chat_history.append(
+                {"role" : "AI","content" : answer}
+            )
+
+            for index, message in enumerate(st.session_state.chat_history, start = 1):        
+                
+                st.caption(f"Message{index}:")
+                with st.chat_message(message["role"]):
+                    st.write(message["content"])
+
+
+            
+
+           
+
+
+        
         
             
 
