@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 df = pd.read_csv(r"C:\Users\vesal\Downloads\Auto.csv")
 
 def pearson_correlation(df):
-    corr = df.corr(method = 'pearson')
-    return corr
+    numeric_df = df.select_dtypes(include=['int64', 'float64'])
+    return numeric_df.corr(method = 'pearson')
 
 
 def pearson_correlation_heatmap(df):
@@ -17,8 +17,8 @@ def pearson_correlation_heatmap(df):
     return fig
 
 def spearman_correlation(df):
-    correlation_matrix = df.corr(method = 'spearman')
-    return correlation_matrix
+    numeric_df = df.select_dtypes(include=['int64', 'float64'])
+    return numeric_df.corr(method = 'spearman')
 
 def spearman_correlation_heatmap(df):
     spearman_corr_matrix = spearman_correlation(df)
