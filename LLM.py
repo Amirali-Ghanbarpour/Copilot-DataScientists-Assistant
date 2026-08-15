@@ -44,7 +44,7 @@ def eda_scan(eda_results):
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": "Bearer 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",
+            "Authorization": "Your API key Here",
             "Content-Type": "application/json"
         },
         json={
@@ -114,7 +114,7 @@ EDA Scan (feature-level summary):
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": "Bearer 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",
+            "Authorization": "Your API key Here",
             "Content-Type": "application/json"
         },
         json={
@@ -183,7 +183,7 @@ Feature-Level Insights:
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": "Bearer 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",
+            "Authorization": "Your API key Here",
             "Content-Type": "application/json"
         },
         json={
@@ -257,7 +257,7 @@ The question that user asked:
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": "Bearer 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",
+            "Authorization": "Your API key Here",
             "Content-Type": "application/json"
         },
         json={

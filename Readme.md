@@ -176,6 +176,15 @@ streamlit run frontend.py
 
 ---
 
+🔑 API Key
+
+The LLM functionality requires an API key.
+
+Before running the application, add your personal API key to the Authorization variable in LLM.py.
+
+The application will not be able to use the LLM functionality if the API key is not configured correctly.
+
+
 ## 🎯 Goal
 
 The goal of this project is to combine:
