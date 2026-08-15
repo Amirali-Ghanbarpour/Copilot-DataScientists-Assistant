@@ -178,10 +178,14 @@ streamlit run frontend.py
 
 🔑 API Key
 
-The LLM functionality requires an API key.
+The LLM functionality requires an OpenRouter API key.
 
+1. Create your API key
+Create a free OpenRouter account and generate your API key from the official OpenRouter website.
+OpenRouter provides free models that can be used within its free-tier limits.
+
+2. Add your API key
 Before running the application, add your personal API key to the Authorization variable in LLM.py.
-
 The application will not be able to use the LLM functionality if the API key is not configured correctly.
 
 
