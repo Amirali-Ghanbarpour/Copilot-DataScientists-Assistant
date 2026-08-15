@@ -4,36 +4,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from streamlit_option_menu import option_menu 
-from Backend import pearson_correlation
-from Backend import pearson_correlation_heatmap
-from Backend import spearman_correlation
-from Backend import spearman_correlation_heatmap
+from Backend import pearson_correlation, spearman_correlation_heatmap, spearman_correlation, pearson_correlation_heatmap
 from scipy.stats import gaussian_kde
-from LLM import eda_scan
-from LLM import eda_scan_each_feature
-from LLM import model_recommendation
-from LLM import ai_answer
-from preprocessing import divide_the_dataset_into_x_y
-from preprocessing import select_feature_type_numerical
-from preprocessing import select_feature_type_categorical
-from preprocessing import median_imputer_missing_data_handling
-from preprocessing import robust_scaler_for_numerical_features
-from preprocessing import most_frequent_missing_data_handeling
-from preprocessing import one_hot_encoding
+from LLM import eda_scan, eda_scan_each_feature, model_recommendation, ai_answer
+from preprocessing import set_session_state, preprocessing_before_training_models, divide_the_dataset_into_x_y, one_hot_encoding, most_frequent_missing_data_handeling, robust_scaler_for_numerical_features, median_imputer_missing_data_handling, select_feature_type_categorical, select_feature_type_numerical
 from sklearn.model_selection import train_test_split
-from modeling import train_testsplit
-from modeling import logistic_regression
-from modeling import confusion_matrixx
-from modeling import classification_rep
+from modeling import train_testsplit, report_for_linear_models, metrics, linear_models, classification_rep, confusion_matrixx, logistic_regression, random_forest_calssifer, svc_classifier, knn_classifier
 from sklearn.preprocessing import LabelEncoder
-from modeling import random_forest_calssifer
-from modeling import svc_classifier
-from modeling import knn_classifier
-from modeling import metrics
-from preprocessing import set_session_state
-from preprocessing import preprocessing_before_training_models
-from modeling import linear_models
-from modeling import report_for_linear_models
 import textwrap
 
 
@@ -3066,7 +3043,7 @@ if uploaded_data:
             ):
 
                 st.warning(
-                    "Regression Models cannot handle target features "
+                    "Linear Regression Model cannot handle target features "
                     "with categorical values"
                 )
 
@@ -3095,7 +3072,7 @@ if uploaded_data:
             ):
 
                 st.warning(
-                    "Regression Models cannot handle target features "
+                    "Ridge Regression Model cannot handle target features "
                     "with categorical values"
                 )
 
@@ -3124,7 +3101,7 @@ if uploaded_data:
             ):
 
                 st.warning(
-                    "Regression Models cannot handle target features "
+                    "Lasso Regression Model cannot handle target features "
                     "with categorical values"
                 )
 
@@ -3153,7 +3130,7 @@ if uploaded_data:
             ):
 
                 st.warning(
-                    "Regression Models cannot handle target features "
+                    "Huber Regression Model cannot handle target features "
                     "with categorical values"
                 )
 
