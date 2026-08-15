@@ -167,40 +167,11 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-Install the dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 🔑 API Key
-
-The LLM functionality requires an API key.
-
-For example:
-
-```text
-OPENROUTER_API_KEY=your_api_key_here
-```
-
-Do not upload your API key to GitHub.
-
-If you use a `.env` file, make sure it is included in `.gitignore`.
-
----
 
 ## ▶️ Run the Application
 
 ```bash
-streamlit run app.py
-```
-
-The application will normally be available at:
-
-```text
-http://localhost:8501
+streamlit run frontend.py
 ```
 
 ---
@@ -229,4 +200,4 @@ The application is designed to assist Data Scientists with exploration, analysis
 
 **Amirali Ghanbarpourshiadeh**
 
-Computer Engineering → Data Science & Artificial Intelligence
+Computer Engineer → Data Science & Artificial Intelligence
